@@ -1,0 +1,14 @@
+helm install application-gateway-kubernetes-ingress/ingress-azure \
+     --generate-name \
+     --namespace default \
+     --debug \
+     --set appgw.name=appgateway \
+     --set appgw.resourceGroup=rg-orbit-aks2-demo \
+     --set appgw.subscriptionId=418e0bd3-5f8d-415d-a716-09b96c8b8545\
+     --set appgw.shared=false \
+     --set armAuth.type=servicePrincipal \
+     --set armAuth.secretJSON=$(az ad sp create-for-rbac --role Contributor --scopes /subscriptions/418e0bd3-5f8d-415d-a716-09b96c8b8545/resourceGroups/rg-orbit-aks2-demo/providers/Microsoft.Network/applicationGateways/appgateway --sdk-auth | base64 -w0) \
+     --set rbac.enabled=true \
+     --set verbosityLevel=3 \
+     --set kubernetes.watchspace=default \
+     --set aksClusterConfiguration.apiServerAddress=orbit-aks-l9nouofl.hcp.northeurope.azmk8s.io
